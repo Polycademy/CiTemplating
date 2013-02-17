@@ -1,6 +1,6 @@
 {
-    "name": "polycademy/citemplating",
-    "type": "library",
+	"name": "polycademy/citemplating",
+	"type": "library",
 	"description": "Simple Templating Static Helper Class for Codeigniter Provides Partials and Layouts - Convention over configuration",
 	"keywords": ["codeigniter","templating"],
 	"license": "WTFPL",
