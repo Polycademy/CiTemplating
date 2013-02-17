@@ -45,7 +45,7 @@ Instead of loading views you:
 	//third parameter is an optional specification of the layout file, by default it's 'default'
     Template::compose('index', $view_data);
 	//to load json view
-	Template::composer(false, $json_array, 'json');
+	Template::compose(false, $json_array, 'json');
 
 In your views and layouts, you can load partials directly like this:
 
