@@ -57,7 +57,7 @@ In your views and layouts, you can load partials directly like this:
 
 This static class is installed via Composer and is therefore autoloaded. You can just assume Template::partial or Template:compose to be a global function!
 
-The in the layout file you have to echo out the $yield variable which is the passed in data from the actual view. For example default_layout.php could be:
+In the layout file you have to echo out the $yield variable which is the passed in data from the actual view. For example default_layout.php could be:
 
     <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
     <? Template::partial('header', $header) ?>
