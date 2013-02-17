@@ -7,4 +7,9 @@
     "require": {
         "composer/installers": "*"
     }
+	"extra": {
+		"installer-paths": {
+			"application/libraries/{$name}/": ["polycademy/citemplating"]
+		}
+	}
 }
