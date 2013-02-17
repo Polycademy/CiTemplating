@@ -32,11 +32,11 @@ Your view structure will begin to look like this:
         |
         |----home
         |       |
-        |       |----index.php
+        |       |----index_view.php
         |
         |----blog
                 |
-                |----articles.php
+                |----articles_view.php
 
 Instead of loading views you:
 
@@ -54,3 +54,11 @@ In your views and layouts, you can load partials directly like this:
 	//third parameter is a boolean of whether you want the partial to be looped, in that case you need to use $row variable in the looped partial or $row->XXX or $row['XXX']
 	//fourth parameter is a boolean of whether you want to buffer the output, so the partial returns a variable instead of echoing the output, in that cause you would have to <?= Template::partial... etc ?>
     Template::partial('header', $header);
+
+This static class is installed via Composer and is therefore autoloaded. You can just assume Template::partial or Template:compose to be a global function!
+
+Add this to your composer.json require list.
+
+    "polycademy/citemplating": "*"
+
+This library also works with controllers that are nested in a directory. You would then simply replicate the same directory structure in your view folder.
