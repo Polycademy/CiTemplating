@@ -4,7 +4,7 @@ class Template{
 
 	//partial static, data should be an array, loop by default is false, buffer by default is false (by default will return data...
 	//call this like Template::partial('header', $data)
-	public static function partial($partial, array $data, $loop = false, $buffer = false){	
+	public static function partial($partial, array $data = false, $loop = false, $buffer = false){	
 	
 		//if no _partial, then we append it
 		if(strpos($partial, '_partial') === false){
@@ -44,7 +44,7 @@ class Template{
 	//$view is the path to the view based on the current controller, $data is the data we pass and $layout is the path to the layout we shall use
 	//use like Template::compose('index', $data, 'default');
 	//or Template::compose(false, $data, 'json');
-	public static function compose($view, array $data, $layout = 'default'){
+	public static function compose($view, array $data = false, $layout = 'default'){
 	
 		//auto detecting layout
 		if(strpos($layout, '_layout') === false){
