@@ -76,5 +76,61 @@ class Template{
 		}
 	
 	}
+	
+	//recursively echos out assets either in as js, css, partials or html files
+	//$path is from relative to FCPATH
+	//$ext can be js/css/php/html
+	//$negation is an array of files, directories, and filepaths to negate
+	public static function asset($path, $ext, array $negation = null, $buffer = false){
+	
+		$dirs = new RecursiveDirectoryIterator($path);
+		
+		$output = '';
+		
+		foreach(new RecursiveIteratorIterator($dirs) as $file) {
+		
+			//negate directories or negate filenames
+			if(!empty($negation)){
+				foreach($negation as $value){
+					
+					$value = trim($value, '/\\');
+					$value = strtr($value, array('/' => DIRECTORY_SEPARATOR, '\\' => DIRECTORY_SEPARATOR));
+					
+					if($value == $file->getPath() OR $value == $file->getFilename() OR $value == $file->getPathname()){
+						continue 2;
+					}
+					
+				}
+			}
+			
+			if($ext != $file->getExtension()){
+				continue;
+			}
+			
+			switch($ext){
+				case 'js':
+					$output .= '<script src="' . strtr($file, '\\', '/') . '"></script>';
+					break;
+				case 'css':
+					$output .= '<link rel="stylesheet" href="' . strtr($file, '\\', '/') . '">';
+					break;
+				case 'php':
+					preg_match('/application[\\|\/]views[\\|\/](.+)\.php$/', strtr($file->getPathname(), '\\', '/'), $matches);
+					$output .= get_instance()->load->view($matches[1], null, true);
+					break;
+				case 'html':
+					$output .= file_get_contents(strtr($file->getPathname(), '\\', '/'));
+					break;
+			}
+			
+		}
+		
+		if($buffer){
+			return $output;
+		}else{
+			echo $output;
+		}
+	
+	}
 
 }
