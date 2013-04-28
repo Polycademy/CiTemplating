@@ -81,6 +81,7 @@ class Template{
 	//$path is from relative to FCPATH
 	//$ext can be js/css/php/html
 	//$negation is an array of files, directories, and filepaths to negate
+	//negation can be recursive as long as you do /**
 	public static function asset($path, $ext, array $negation = null, $buffer = false){
 	
 		$dirs = new RecursiveDirectoryIterator($path);
@@ -89,6 +90,10 @@ class Template{
 		
 		foreach(new RecursiveIteratorIterator($dirs) as $file) {
 		
+			$path = strtr($file->getPath(), array('/' => DIRECTORY_SEPARATOR, '\\' => DIRECTORY_SEPARATOR));
+			$filename = $file->getFilename();
+			$pathname = strtr($file->getPathname(), array('/' => DIRECTORY_SEPARATOR, '\\' => DIRECTORY_SEPARATOR)); //fullpath
+		
 			//negate directories or negate filenames
 			if(!empty($negation)){
 				foreach($negation as $value){
@@ -96,7 +101,24 @@ class Template{
 					$value = trim($value, '/\\');
 					$value = strtr($value, array('/' => DIRECTORY_SEPARATOR, '\\' => DIRECTORY_SEPARATOR));
 					
-					if($value == $file->getPath() OR $value == $file->getFilename() OR $value == $file->getPathname()){
+					if(substr($value, -2) == DIRECTORY_SEPARATOR . '*'){
+						//if the last two characters are /*, then just remove them, it will work normally
+						$value = substr($value, 0, -2);
+					}
+					
+					$subdirectory_match = false;
+					if(substr($value, -3) == DIRECTORY_SEPARATOR . '**'){
+						//if the last three characters is /**, then ignore all subdirectories
+						//we want to extract the matching parent folder, and then test if this string exists in any of the pathnames
+						$subdirectory_match = substr($value, 0, -3);
+					}
+					
+					if(
+						$value == $path OR 
+						$value == $filename OR 
+						$value == $pathname OR 
+						strpos($pathname, $subdirectory_match) === 0
+					){
 						continue 2;
 					}
 					
